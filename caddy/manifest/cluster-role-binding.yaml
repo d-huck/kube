@@ -1,0 +1,13 @@
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: caddy-ingress-controller-role-binding
+  namespace: caddy-service
+roleRef:
+  kind: ClusterRole
+  name: caddy-ingress-controller-role
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: caddy-ingress-controller
+  namespace: caddy-service

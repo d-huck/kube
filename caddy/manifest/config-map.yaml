@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: caddy-ingress-controller-configmap
+  namespace: caddy-service
+data:
+  acmeCA: ""
+  acmeEABKeyId: ""
+  acmeEABMacKey: ""
+  debug: "true"
+  email: "d@tinycact.us"
+  experimentalSmartSort: "false"
+  metrics: "false"
+  onDemandTLS: "false"
+  proxyProtocol: "false"

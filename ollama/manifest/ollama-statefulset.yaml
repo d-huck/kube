@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ollama
+  namespace: ollama-service
+spec:
+  selector:
+    matchLabels:
+      app: ollama
+  serviceName: "ollama"
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      runtimeClassName: nvidia
+      containers:
+      - name: ollama
+        image: ollama/ollama:latest
+        ports:
+        - containerPort: 11434
+        resources:
+          requests:
+            cpu: "2000m"
+            memory: "2Gi"
+          limits:
+            cpu: "4000m"
+            memory: "4Gi"
+            nvidia.com/gpu: 1
+        volumeMounts:
+        - name: ollama-data
+          mountPath: /root/.ollama
+
+      volumes:
+      - name: ollama-data
+        hostPath:
+          path: "/data/.ollama"
+  
