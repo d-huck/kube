@@ -54,7 +54,7 @@ spec:
             - name: "AUTOCOMPLETE"
               value: "false"
             - name: "BASE_URL"
-              value: "http://search.vaporwav.in:8080/"
+              value: "http://localhost:8080/"
             - name: "INSTANCE_NAME"
               value: "searxng"
           ports:
@@ -91,5 +91,6 @@ spec:
             timeoutSeconds: 1
       volumes:
         - name: searxng-config
-          secret:
-            secretName: searxng-config
+          configMap:
+            name: searxng-config
+            defaultMode: 420
