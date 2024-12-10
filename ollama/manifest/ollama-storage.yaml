@@ -1,0 +1,44 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ollama-local-storage
+  namespace: ollama-service
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ollama-volume
+  namespace: ollama-service
+spec:
+  capacity:
+    storage: 100Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: ollama-local-storage
+  local:
+    path: /data/.ollama
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - saturn
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ollama-pvc
+  namespace: ollama-service
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ollama-local-storage  # Matches the StorageClass
+  resources:
+    requests:
+      storage: 100Gi  # Adjust the size as needed

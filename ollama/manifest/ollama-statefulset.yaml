@@ -33,6 +33,6 @@ spec:
 
       volumes:
       - name: ollama-data
-        hostPath:
-          path: "/data/.ollama"
+        persistentVolumeClaim:
+          claimName: ollama-pvc
   
