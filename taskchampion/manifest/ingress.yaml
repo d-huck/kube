@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: taskchampion-ingress
+  namespace: taskchampion
+
+spec:
+  ingressClassName: caddy
+  rules:
+  - host: taskchampion.vaporwav.in
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: taskchampion
+            port:
+              number: 8080

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: taskchampion
+  namespace: taskchampion
+spec:
+  selector:
+    matchLabels:
+      app: taskchampion
+  serviceName: "taskchampion"
+  template:
+    metadata:
+      labels:
+        app: taskchampion
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - tri
+      containers:
+      - name: taskchampion
+        image: ghcr.io/gothenburgbitfactory/taskchampion-sync-server:main
+        command: ["taskchampion-sync-server"]
+        args: ["--allow-client-id", "55901a94-3cc3-422d-ace8-ed89c3b80827"]
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "512M"
+          limits:
+            cpu: "4000m"
+            memory: "4Gi"
+      #   volumeMounts:
+      #   - name: taskchampion-data
+      #     mountPath: /var/lib/taskchampion-sync-server
+      # volumes:
+      # - name: taskchampion-data
+      #   persistentVolumeClaim:
+      #     claimName: taskchampion-pvc
